@@ -1,0 +1,21 @@
+let realDebridToken = "YOUR_REAL_DEBRID_API_TOKEN";
+
+async function getUnrestrictedLink(link) {
+  let response = await fetch("https://api.real-debrid.com/rest/1.0/unrestrict/link", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${realDebridToken}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ link })
+  });
+  let data = await response.json();
+  return data.download;
+}
+
+async function handleMagnetLink(link) {
+  let unrestrictedLink = await getUnrestrictedLink(link);
+  let url = URL(string: unrestrictedLink);
+  UIApplication.shared.open(url, options: [:], completionHandler: nil);
+}
+
